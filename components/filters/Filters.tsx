@@ -1,32 +1,36 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
-import { Movie } from '@/lib/sanity/types/movie';
+import React, { useEffect } from 'react';
 import Checkbox from './selectors/Checkbox';
 import { updateFilters } from "./actions/updateFilters";
 import FilteredListing from './FilteredListing'
+import { useFilters } from './state/FiltersContext';
+import { FilteredItem } from './types/FilteredItem';
 
 interface FilterProps {
-    itemsToFilter: Movie[];
+    itemsToFilter: FilteredItem[];
 }
 
 const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
-  
-  const [filtersOptions, setFiltersOptions] = useState<Record<string, any[]>>({});
 
-  const [filteredItems, setFilteredItems] = useState<Movie[]>([]);
+  const { STATE_filtersOptions, STATE_itemsToFilter, STATE_filteredItems, STATE_setFiltersOptions, STATE_setItemsToFilter, STATE_setFilteredItems } = useFilters();
+  
+  //const [filtersOptions, setFiltersOptions] = useState<Record<string, any[]>>({});
+
+  //const [filteredItems, setFilteredItems] = useState<FilteredItem[]>([]);
 
   // Set the filtering options based on the propertyToSearch
-  const filtersHandler = (selectedOptions: string[], propertyToSearch: keyof Movie) => {
-    setFiltersOptions((prevFilters) => ({
+  const filtersHandler = (selectedOptions: string[], propertyToSearch: string) => {
+    STATE_setFiltersOptions(prevFilters => ({
       ...prevFilters,
       [propertyToSearch]: selectedOptions,
     }));
   };
   // Compare and update the filters
   useEffect(() => {
-    updateFilters(itemsToFilter, filtersOptions, setFilteredItems);
-  }, [filtersOptions, itemsToFilter]);
+        STATE_setItemsToFilter(itemsToFilter);
+    updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
+  }, [STATE_filtersOptions, STATE_itemsToFilter]);
 
 
   return (
@@ -37,7 +41,7 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
         <div className='flex flex-col gap-6 bg-white p-6'>
 
           <Checkbox   
-            itemsToFilter={itemsToFilter}
+            itemsToFilter={STATE_itemsToFilter}
             label={"castMembers"}
             propertyToSearch={"castMembers.characterName"}
             filtersHandler={filtersHandler}
@@ -46,7 +50,7 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
         </div>
 
         <div>
-          <FilteredListing filteredItems={filteredItems} />
+          <FilteredListing filteredItems={STATE_filteredItems} />
         </div>
 
       </div>
