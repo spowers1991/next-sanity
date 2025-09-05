@@ -1,63 +1,70 @@
-"use client"
+"use client";
 
-import React, { useEffect } from 'react';
-import Checkbox from './selectors/Checkbox';
+import React, { useEffect } from "react";
+import Checkbox from "./selectors/[checkbox]/Checkbox";
+import FilteredListing from "./FilteredListing";
 import { updateFilters } from "./actions/updateFilters";
-import FilteredListing from './FilteredListing'
-import { useFilters } from './state/FiltersContext';
-import { FilteredItem } from './types/FilteredItem';
+import { useFilters } from "./state/FiltersContext";
+import { FilteredItem } from "./types/FilteredItem";
 
 interface FilterProps {
-    itemsToFilter: FilteredItem[];
+  itemsToFilter: FilteredItem[];
 }
 
 const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
+  // Destructure filter state and setters from context
+  const {
+    STATE_filtersOptions,
+    STATE_itemsToFilter,
+    STATE_filteredItems,
+    STATE_setFiltersOptions,
+    STATE_setItemsToFilter,
+    STATE_setFilteredItems,
+  } = useFilters();
 
-  const { STATE_filtersOptions, STATE_itemsToFilter, STATE_filteredItems, STATE_setFiltersOptions, STATE_setItemsToFilter, STATE_setFilteredItems } = useFilters();
-  
-  //const [filtersOptions, setFiltersOptions] = useState<Record<string, any[]>>({});
-
-  //const [filteredItems, setFilteredItems] = useState<FilteredItem[]>([]);
-
-  // Set the filtering options based on the propertyToSearch
-  const filtersHandler = (selectedOptions: string[], propertyToSearch: string) => {
-    STATE_setFiltersOptions(prevFilters => ({
+  /**
+   * Updates the selected filter options for a given property path
+   */
+  const filtersHandler = (selectedOptions: string[], propertyPath: string) => {
+    STATE_setFiltersOptions((prevFilters) => ({
       ...prevFilters,
-      [propertyToSearch]: selectedOptions,
+      [propertyPath]: selectedOptions,
     }));
   };
-  // Compare and update the filters
-  useEffect(() => {
-        STATE_setItemsToFilter(itemsToFilter);
-    updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
-  }, [STATE_filtersOptions, STATE_itemsToFilter]);
 
+  /**
+   * Effect: update filtered items whenever the filters or base items change
+   */
+  useEffect(() => {
+    // Keep context items in sync with props
+    STATE_setItemsToFilter(itemsToFilter);
+
+    // Apply filters
+    updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
+  }, [itemsToFilter, STATE_itemsToFilter, STATE_filtersOptions]);
 
   return (
     <div className="container flex m-auto w-full">
-
       <div className="grid grid-cols-2 gap-6 w-full">
-
-        <div className='flex flex-col gap-6 bg-white p-6'>
-
-          <Checkbox   
+        {/* Filter Sidebar */}
+        <div className="flex flex-col gap-6 bg-white p-6">
+          <Checkbox
             itemsToFilter={STATE_itemsToFilter}
-            label={"castMembers"}
-            propertyToSearch={"castMembers.characterName"}
+            label="Cast Members"
+            propertyToSearch="castMembers.characterName"
+            filtersOptions={STATE_filtersOptions}     
+            setFiltersOptions={STATE_setFiltersOptions} 
             filtersHandler={filtersHandler}
           />
-
         </div>
 
-        <div>
+        {/* Filtered Listing */}
+        <div className="w-full">
           <FilteredListing filteredItems={STATE_filteredItems} />
         </div>
-
       </div>
-
     </div>
   );
-
 };
 
 export default Filters;

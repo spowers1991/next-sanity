@@ -1,12 +1,14 @@
-export function extractPropertiesNames(arr, propertyPath) {
-  const uniqueValuesSet = new Set();
+export function extractPropertiesNames<T extends Record<string, any>>(
+  arr: T[],
+  propertyPath: string
+): string[] {
+  const uniqueValuesSet = new Set<string>();
 
   if (!Array.isArray(arr)) return [];
 
-  // Split the property path into parts for nested access
   const pathParts = propertyPath.split(".");
 
-  const extractValue = (obj, parts) => {
+  const extractValue = (obj: any, parts: string[]) => {
     if (!obj) return;
 
     const [current, ...rest] = parts;
@@ -17,12 +19,12 @@ export function extractPropertiesNames(arr, propertyPath) {
     if (rest.length === 0) {
       // Last part of the path
       if (Array.isArray(value)) {
-        value.forEach((v) => uniqueValuesSet.add(v));
+        value.forEach((v) => uniqueValuesSet.add(String(v)));
       } else {
-        uniqueValuesSet.add(value);
+        uniqueValuesSet.add(String(value));
       }
     } else {
-      // Not last part, drill down
+      // Not last part → drill deeper
       if (Array.isArray(value)) {
         value.forEach((v) => extractValue(v, rest));
       } else {
