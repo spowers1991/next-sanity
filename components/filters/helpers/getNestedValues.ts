@@ -1,27 +1,21 @@
-/**
- * Recursively retrieves values from an object based on a dot-notation path.
- *
- * @param obj - Object to traverse
- * @param pathParts - Array of property keys
- * @returns Array of values found at the specified path
- */
-export function getNestedValues(obj: any, pathParts: string[]): any[] {
+export function getNestedValues<T extends Record<string, unknown>>(
+  obj: T | undefined,
+  pathParts: string[]
+): unknown[] {
   if (!obj) return [];
 
   const [current, ...rest] = pathParts;
-  const value = obj[current];
+  const value = obj[current as keyof T];
 
   if (value === undefined || value === null) return [];
 
   if (rest.length === 0) {
-    // Last part of path
     return Array.isArray(value) ? value : [value];
   }
 
-  // Not last part, drill deeper
   if (Array.isArray(value)) {
-    return value.flatMap(v => getNestedValues(v, rest));
+    return value.flatMap(v => getNestedValues(v as T, rest));
   }
 
-  return getNestedValues(value, rest);
+  return getNestedValues(value as T, rest);
 }

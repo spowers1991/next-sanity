@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 /**
  * Handles updating checkbox state and filters when a checkbox is clicked.
  *

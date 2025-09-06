@@ -1,39 +1,25 @@
-export function extractPropertiesNames<T extends Record<string, any>>(
+export function extractPropertiesNames<T extends object>(
   arr: T[],
   propertyPath: string
 ): string[] {
-  const uniqueValuesSet = new Set<string>();
-
-  if (!Array.isArray(arr)) return [];
-
+  const uniqueValues = new Set<string>();
   const pathParts = propertyPath.split(".");
 
-  const extractValue = (obj: any, parts: string[]) => {
-    if (!obj) return;
-
+  const extractValue = (obj: T, parts: string[]): void => {
     const [current, ...rest] = parts;
-    const value = obj[current];
-
+    const value = (obj as Record<string, unknown>)[current];
     if (value === undefined || value === null) return;
 
     if (rest.length === 0) {
-      // Last part of the path
-      if (Array.isArray(value)) {
-        value.forEach((v) => uniqueValuesSet.add(String(v)));
-      } else {
-        uniqueValuesSet.add(String(value));
-      }
+      if (Array.isArray(value)) value.forEach(v => uniqueValues.add(String(v)));
+      else uniqueValues.add(String(value));
     } else {
-      // Not last part → drill deeper
-      if (Array.isArray(value)) {
-        value.forEach((v) => extractValue(v, rest));
-      } else {
-        extractValue(value, rest);
-      }
+      if (Array.isArray(value)) value.forEach(v => extractValue(v as T, rest));
+      else extractValue(value as T, rest);
     }
   };
 
-  arr.forEach((obj) => extractValue(obj, pathParts));
+  arr.forEach(obj => extractValue(obj, pathParts));
 
-  return Array.from(uniqueValuesSet);
+  return Array.from(uniqueValues);
 }

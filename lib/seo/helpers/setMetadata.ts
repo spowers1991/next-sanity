@@ -1,11 +1,10 @@
 import { Metadata } from "next";
-import { Post } from "@/lib/sanity/types/post";
 import { urlForImage } from "@/lib/sanity/helpers/image";
+import { SanityDocument } from '@/lib/sanity/types/sanityDocument'
 
 // Make post optional/partial so it can be dynamic
 export function setMetadata(
-  body?: any,
-  slug?: string
+  body?: SanityDocument,
 ): Metadata {
   const title = body?.title || "Post Not Found";
   

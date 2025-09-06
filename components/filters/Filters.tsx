@@ -36,12 +36,16 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
    * Effect: update filtered items whenever the filters or base items change
    */
   useEffect(() => {
-    // Keep context items in sync with props
-    STATE_setItemsToFilter(itemsToFilter);
-
-    // Apply filters
+  STATE_setItemsToFilter(itemsToFilter);
     updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
-  }, [itemsToFilter, STATE_itemsToFilter, STATE_filtersOptions]);
+  }, [
+    itemsToFilter,
+    STATE_itemsToFilter,
+    STATE_filtersOptions,
+    STATE_setFilteredItems,
+    STATE_setItemsToFilter
+  ]);
+
 
   return (
     <div className="container flex m-auto w-full">

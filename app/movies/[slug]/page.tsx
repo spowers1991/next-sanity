@@ -4,7 +4,7 @@ import PostsMenu from "@/components/PostsMenu";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 import { Metadata } from "next";
 import { setMovieMetadata } from "@/lib/seo/plugins/sanity/helpers/setMovieMetadata";
-import MovieContent from "@/components/sanity/movies/MovieContent";
+import MovieContent from "@/components/sanity/[movies]/MovieContent";
 import Filters from "@/components/filters/Filters";
 
 interface MoviePageProps {
