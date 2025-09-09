@@ -1,37 +1,45 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { FilteredItem } from "../types/FilteredItem";
 
-// filtersOptions stores all selected filters globally
-export type FiltersOptions = Record<string, string[]>;
+// ✅ Types
+type FiltersOptions = Record<string, string[]>;
 
 interface FiltersContextType {
-  filtersOptions: any;
-  setFiltersOptions: any;
-  clearFilters: () => void;
+  STATE_itemsToFilter: FilteredItem[];
+  STATE_setItemsToFilter: React.Dispatch<React.SetStateAction<FilteredItem[]>>;
+  STATE_filteredItems: FilteredItem[];
+  STATE_setFilteredItems: React.Dispatch<React.SetStateAction<FilteredItem[]>>;
+  STATE_filtersOptions: FiltersOptions;
+  STATE_setFiltersOptions: React.Dispatch<React.SetStateAction<FiltersOptions>>;
 }
 
 const FiltersContext = createContext<FiltersContextType | undefined>(undefined);
 
-export const FiltersProvider = ({ children }: { children: ReactNode }) => {
-  const [filtersOptions, setFiltersOptionsState] = useState<FiltersOptions>({});
-
-  // Update the entire filtersOptions at once
-  const setFiltersOptions = (newFilters: FiltersOptions) => {
-    setFiltersOptionsState(newFilters);
-  };
-
-  const clearFilters = () => setFiltersOptionsState({});
+export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [STATE_itemsToFilter, STATE_setItemsToFilter] = useState<FilteredItem[]>([]);
+  const [STATE_filteredItems, STATE_setFilteredItems] = useState<FilteredItem[]>([]);
+  const [STATE_filtersOptions, STATE_setFiltersOptions] = useState<FiltersOptions>({});
 
   return (
-    <FiltersContext.Provider value={{ filtersOptions, setFiltersOptions, clearFilters }}>
+    <FiltersContext.Provider
+      value={{
+        STATE_itemsToFilter,
+        STATE_setItemsToFilter,
+        STATE_filteredItems,
+        STATE_setFilteredItems,
+        STATE_filtersOptions,
+        STATE_setFiltersOptions,
+      }}
+    >
       {children}
     </FiltersContext.Provider>
   );
 };
 
 export const useFilters = () => {
-  const ctx = useContext(FiltersContext);
-  if (!ctx) throw new Error("useFilters must be used within a FiltersProvider");
-  return ctx;
+  const context = useContext(FiltersContext);
+  if (!context) throw new Error("useFilters must be used within a FiltersProvider");
+  return context;
 };

@@ -7,7 +7,7 @@ export type MovieInfoProps = Pick<Movie, "title" | "releaseDate" | "popularity">
   overview?: PortableTextBlock[];
 };
 
-export default function MovieInfo({ title, releaseDate, popularity, overview }: MovieInfoProps) {
+export default function MovieInfo({ title, releaseDate, popularity }: MovieInfoProps) {
   return (
     <div className="md:col-span-2 space-y-6">
       <h1 className="text-4xl font-bold tracking-tight">

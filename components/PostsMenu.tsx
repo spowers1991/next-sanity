@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { sanityClient } from "@/lib/sanity/api/client";
 import { ALL_MOVIES_QUERY } from "@/lib/sanity/queries/getAllMovies";
+import { Post } from "@/lib/sanity/types/post";
 
 export default async function PostsMenu() {
   
-  const posts = (await sanityClient.fetch(ALL_MOVIES_QUERY)) as any[];
+  const posts = (await sanityClient.fetch(ALL_MOVIES_QUERY)) as Post[];
 
   return (
     <div className="flex w-full py-3 px-3">

@@ -31,7 +31,6 @@ export default function MovieContent({
         />
         <div className="flex flex-col gap-3">
           {castMembers.map((castMembers, index) => (
-            console.log(castMembers.person._ref),
             <div key={castMembers._key} className="flex gap-1 flex-col p-3 border-2">
               <div key={castMembers._key || index}>
                 {castMembers.characterName} 
