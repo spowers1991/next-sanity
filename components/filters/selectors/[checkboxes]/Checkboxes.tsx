@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FilteredItem } from "@/components/filters/types/FilteredItem";
 import { extractPropertiesNames } from "@/components/filters/helpers/extractPropertiesNames";
 import { handleCheckboxChange } from "./actions/handleCheckboxChange";
+import { useFilters } from "../../state/FiltersContext";
 
 interface CheckboxProps {
   itemsToFilter: FilteredItem[];
@@ -12,7 +13,7 @@ interface CheckboxProps {
   filtersHandler: (selectedOptions: string[], propertyPath: string) => void;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
+const Checkboxes: React.FC<CheckboxProps> = ({
   itemsToFilter,
   label,
   propertyToSearch,
@@ -21,6 +22,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   filtersHandler,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const { STATE_setShowAnimation } = useFilters();
 
   useEffect(() => {
     if (filtersOptions) {
@@ -52,7 +54,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
                   filtersOptions,
                   setFiltersOptions,
                   propertyToSearch,
-                  filtersHandler
+                  filtersHandler,
+                  STATE_setShowAnimation
                 )
               }
             />
@@ -67,4 +70,4 @@ const Checkbox: React.FC<CheckboxProps> = ({
   );
 };
 
-export default Checkbox;
+export default Checkboxes;

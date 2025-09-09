@@ -9,6 +9,7 @@
  * @param setFiltersOptions - State setter for filtersOptions
  * @param propertyPath - The property key or dot-notation path
  * @param filtersHandler - Callback to update filters
+ * @param setShowAnimation
  */
 export function handleCheckboxChange(
   value: string,
@@ -18,8 +19,10 @@ export function handleCheckboxChange(
   filtersOptions: Record<string, string[]>,
   setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>, 
   propertyPath: string,
-  filtersHandler: (selectedOptions: string[], propertyPath: string) => void
+  filtersHandler: (selectedOptions: string[], propertyPath: string) => void,
+  STATE_setShowAnimation: React.Dispatch<React.SetStateAction<boolean>>
 ) {
+  STATE_setShowAnimation(true)
   // Update selected options
   const updatedOptions = isChecked
     ? [...selectedOptions, value]
@@ -33,7 +36,6 @@ export function handleCheckboxChange(
     ...filtersOptions,
     [propertyPath]: updatedOptions,
   });
-
   // Trigger filtersHandler
   filtersHandler(updatedOptions, propertyPath);
 }

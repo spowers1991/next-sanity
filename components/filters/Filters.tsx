@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Checkbox from "./selectors/[checkbox]/Checkbox";
+import Checkboxes from "./selectors/[checkboxes]/Checkboxes";
 import FilteredListing from "./FilteredListing";
 import { updateFilters } from "./actions/updateFilters";
 import { useFilters } from "./state/FiltersContext";
@@ -20,6 +20,7 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
     STATE_setFiltersOptions,
     STATE_setItemsToFilter,
     STATE_setFilteredItems,
+    STATE_clearFilters
   } = useFilters();
 
   /**
@@ -36,6 +37,7 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
    * Effect: update filtered items whenever the filters or base items change
    */
   useEffect(() => {
+    console.log(STATE_filtersOptions)
   STATE_setItemsToFilter(itemsToFilter);
     updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
   }, [
@@ -46,13 +48,17 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
     STATE_setItemsToFilter
   ]);
 
-
   return (
-    <div className="container flex m-auto w-full">
+    <div className="container">
       <div className="grid grid-cols-2 gap-6 w-full">
         {/* Filter Sidebar */}
         <div className="flex flex-col gap-6 bg-white p-6">
-          <Checkbox
+          {Object.keys(STATE_filtersOptions).length > 0 &&
+            <button onClick={STATE_clearFilters} className="bg-red-900 text-white font-semibold uppercase text-xs p-3">
+              Clear filters
+            </button>
+          }
+          <Checkboxes
             itemsToFilter={STATE_itemsToFilter}
             label="Cast Members"
             propertyToSearch="castMembers.characterName"
@@ -64,7 +70,9 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
 
         {/* Filtered Listing */}
         <div className="w-full">
-          <FilteredListing filteredItems={STATE_filteredItems} />
+          <FilteredListing 
+            filteredItems={STATE_filteredItems}
+          />
         </div>
       </div>
     </div>

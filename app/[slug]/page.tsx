@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { sanityClient } from "@/lib/sanity/api/client";
 import type { Post } from "@/lib/sanity/types/post";
 import { POST_QUERY } from "@/lib/sanity/queries/getCurrentPost";
-import PostsMenu from "@/components/PostsMenu";
+import PostsMenu from "@/components/header/MainMenu";
 
 type Props = {
   params: {

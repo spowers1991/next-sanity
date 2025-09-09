@@ -1,45 +1,53 @@
 import { sanityClient } from "@/lib/sanity/api/client";
 import { Movie } from "@/lib/sanity/types/movie";
-import PostsMenu from "@/components/PostsMenu";
+import PostsMenu from "@/components/header/MainMenu";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 import { Metadata } from "next";
 import { setMovieMetadata } from "@/lib/seo/plugins/sanity/helpers/setMovieMetadata";
 import MovieContent from "@/components/sanity/[movies]/MovieContent";
 import Filters from "@/components/filters/Filters";
+import { cache } from "react";
 
 interface MoviePageProps {
   params: { slug: string };
 }
 
-// Generate static paths for SSG
-export async function generateStaticParams() {
+// Incremental static regeneration (optional)
+export const revalidate = 60; // seconds
+
+// --- Cached Sanity queries ---
+const getAllSlugs = cache(async () => {
   const movies: Movie[] = await sanityClient.fetch(`*[_type == "movie"]{ slug }`);
+  return movies;
+});
+
+const getMovieAndMovies = cache(async (slug: string) => {
+  return sanityClient.fetch(
+    `{
+      "movie": *[_type == "movie" && slug.current == $slug][0],
+      "movies": *[_type == "movie"] | order(releaseDate desc)
+    }`,
+    { slug }
+  ) as Promise<{ movie: Movie | null; movies: Movie[] }>;
+});
+
+// --- Static paths for SSG ---
+export async function generateStaticParams() {
+  const movies = await getAllSlugs();
   return movies.map((movie) => ({ slug: movie.slug.current }));
 }
 
-// Generate MetaData for SEO
+// --- Metadata for SEO ---
 export async function generateMetadata({ params }: MoviePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const movie: Movie | null = await sanityClient.fetch(
-    `*[_type == "movie" && slug.current == $slug][0]`,
-    { slug }
-  );
+  const { movie } = await getMovieAndMovies(slug);
   return setMovieMetadata(movie, slug);
 }
 
+// --- Page Component ---
 export default async function MoviePage({ params }: MoviePageProps) {
   const { slug } = await params;
-
-  // Fetch current movie
-  const movie: Movie | null = await sanityClient.fetch(
-    `*[_type == "movie" && slug.current == $slug][0]`,
-    { slug }
-  );
-
-  // Fetch all movies for FilteredListing
-  const movies: Movie[] = await sanityClient.fetch(
-    `*[_type == "movie"] | order(releaseDate desc)`
-  );
+  const { movie, movies } = await getMovieAndMovies(slug);
 
   if (!movie) {
     return <p className="text-center text-gray-500">Movie not found</p>;
