@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import React from 'react';
+import { FilteredItem } from './types/FilteredItem';
 
 interface FilteredItemProps{
-  filteredItem: any;
+  filteredItem: FilteredItem;
 }
 
 const FiltersCard: React.FC<FilteredItemProps> = ({ filteredItem }) => {

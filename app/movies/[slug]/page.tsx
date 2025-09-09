@@ -4,9 +4,8 @@ import PostsMenu from "@/components/PostsMenu";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 import { Metadata } from "next";
 import { setMovieMetadata } from "@/lib/seo/plugins/sanity/helpers/setMovieMetadata";
-import MovieContent from "@/components/sanity/movies/MovieContent";
+import MovieContent from "@/components/sanity/[movies]/MovieContent";
 import Filters from "@/components/filters/Filters";
-import { FiltersProvider } from "@/components/filters/state/FiltersContext";
 
 interface MoviePageProps {
   params: { slug: string };
@@ -49,25 +48,23 @@ export default async function MoviePage({ params }: MoviePageProps) {
   const movieImage = movie.poster ? urlForImage(movie.poster).url() : undefined;
 
   return (
-    <FiltersProvider>
-      <div className="min-h-screen bg-gray-950 text-white">
-        <PostsMenu />
-        <div className="flex flex-row w-full">
-          <div className="w-2/4">
-            <Filters itemsToFilter={movies} />
-          </div>
-          <div className="w-2/4">
-            <MovieContent
-              title={movie.title}
-              posterUrl={movieImage!}
-              releaseDate={movie.releaseDate}
-              popularity={movie.popularity}
-              overview={movie.overview?.[0]?.children?.[0]?.text || ""}
-              castMembers={movie.castMembers}
-            />
-          </div>
+    <div className="min-h-screen bg-gray-950 text-white">
+      <PostsMenu />
+      <div className="flex flex-row w-full">
+        <div className="w-2/4">
+          <Filters itemsToFilter={movies} />
+        </div>
+        <div className="w-2/4">
+          <MovieContent
+            title={movie.title}
+            posterUrl={movieImage!}
+            releaseDate={movie.releaseDate}
+            popularity={movie.popularity}
+            overview={movie.overview?.[0]?.children?.[0]?.text || ""}
+            castMembers={movie.castMembers}
+          />
         </div>
       </div>
-    </FiltersProvider>
+    </div>
   );
 }

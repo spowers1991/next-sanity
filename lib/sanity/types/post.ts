@@ -4,6 +4,7 @@ export type Post = {
   _id: string;
   _type: "post";
   title: string;
+  name: string;
   slug: { current: string };
   publishedAt: string;
   overview: PortableTextBlock[];

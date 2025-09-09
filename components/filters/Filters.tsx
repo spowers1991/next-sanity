@@ -1,59 +1,74 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Movie } from '@/lib/sanity/types/movie';
-import Checkbox from './selectors/Checkbox';
+import React, { useEffect } from "react";
+import Checkbox from "./selectors/[checkbox]/Checkbox";
+import FilteredListing from "./FilteredListing";
 import { updateFilters } from "./actions/updateFilters";
-import FilteredListing from './FilteredListing'
+import { useFilters } from "./state/FiltersContext";
+import { FilteredItem } from "./types/FilteredItem";
 
 interface FilterProps {
-    itemsToFilter: Movie[];
+  itemsToFilter: FilteredItem[];
 }
 
 const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
-  
-  const [filtersOptions, setFiltersOptions] = useState<Record<string, any[]>>({});
+  // Destructure filter state and setters from context
+  const {
+    STATE_filtersOptions,
+    STATE_itemsToFilter,
+    STATE_filteredItems,
+    STATE_setFiltersOptions,
+    STATE_setItemsToFilter,
+    STATE_setFilteredItems,
+  } = useFilters();
 
-  const [filteredItems, setFilteredItems] = useState<Movie[]>([]);
-
-  // Set the filtering options based on the propertyToSearch
-  const filtersHandler = (selectedOptions: string[], propertyToSearch: keyof Movie) => {
-    setFiltersOptions((prevFilters) => ({
+  /**
+   * Updates the selected filter options for a given property path
+   */
+  const filtersHandler = (selectedOptions: string[], propertyPath: string) => {
+    STATE_setFiltersOptions((prevFilters) => ({
       ...prevFilters,
-      [propertyToSearch]: selectedOptions,
+      [propertyPath]: selectedOptions,
     }));
   };
-  // Compare and update the filters
+
+  /**
+   * Effect: update filtered items whenever the filters or base items change
+   */
   useEffect(() => {
-    updateFilters(itemsToFilter, filtersOptions, setFilteredItems);
-  }, [filtersOptions, itemsToFilter]);
+  STATE_setItemsToFilter(itemsToFilter);
+    updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
+  }, [
+    itemsToFilter,
+    STATE_itemsToFilter,
+    STATE_filtersOptions,
+    STATE_setFilteredItems,
+    STATE_setItemsToFilter
+  ]);
 
 
   return (
     <div className="container flex m-auto w-full">
-
       <div className="grid grid-cols-2 gap-6 w-full">
-
-        <div className='flex flex-col gap-6 bg-white p-6'>
-
-          <Checkbox   
-            itemsToFilter={itemsToFilter}
-            label={"castMembers"}
-            propertyToSearch={"castMembers.characterName"}
+        {/* Filter Sidebar */}
+        <div className="flex flex-col gap-6 bg-white p-6">
+          <Checkbox
+            itemsToFilter={STATE_itemsToFilter}
+            label="Cast Members"
+            propertyToSearch="castMembers.characterName"
+            filtersOptions={STATE_filtersOptions}     
+            setFiltersOptions={STATE_setFiltersOptions} 
             filtersHandler={filtersHandler}
           />
-
         </div>
 
-        <div>
-          <FilteredListing filteredItems={filteredItems} />
+        {/* Filtered Listing */}
+        <div className="w-full">
+          <FilteredListing filteredItems={STATE_filteredItems} />
         </div>
-
       </div>
-
     </div>
   );
-
 };
 
 export default Filters;
