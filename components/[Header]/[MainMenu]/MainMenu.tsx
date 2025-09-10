@@ -1,9 +1,9 @@
 import { sanityClient } from "@/lib/sanity/api/client";
 import { ALL_MOVIES_QUERY } from "@/lib/sanity/queries/getAllMovies";
-import { Post } from "@/lib/sanity/types/post";
-import MenuItem from './MenuItem'
+import { Post } from "@/lib/sanity/types/Post";
+import MenuItem from './[MenuItem]/MenuItem'
 
-export default async function PostsMenu() {
+export default async function MainMenu() {
   
   const posts = (await sanityClient.fetch(ALL_MOVIES_QUERY)) as Post[];
 

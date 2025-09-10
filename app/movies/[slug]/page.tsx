@@ -1,11 +1,10 @@
 import { sanityClient } from "@/lib/sanity/api/client";
-import { Movie } from "@/lib/sanity/types/movie";
-import PostsMenu from "@/components/header/MainMenu";
+import type { Movie as MovieType  } from "@/lib/sanity/types/Movie";
+import MainMenu from "@/components/[Header]/[MainMenu]/MainMenu";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 import { Metadata } from "next";
 import { setMovieMetadata } from "@/lib/seo/plugins/sanity/helpers/setMovieMetadata";
-import MovieContent from "@/components/sanity/[movies]/MovieContent";
-import Filters from "@/components/filters/Filters";
+import Movie from "@/components/[Movie]/Movie";
 import { cache } from "react";
 
 interface MoviePageProps {
@@ -17,7 +16,7 @@ export const revalidate = 60; // seconds
 
 // --- Cached Sanity queries ---
 const getAllSlugs = cache(async () => {
-  const movies: Movie[] = await sanityClient.fetch(`*[_type == "movie"]{ slug }`);
+  const movies: MovieType[] = await sanityClient.fetch(`*[_type == "movie"]{ slug }`);
   return movies;
 });
 
@@ -28,7 +27,7 @@ const getMovieAndMovies = cache(async (slug: string) => {
       "movies": *[_type == "movie"] | order(releaseDate desc)
     }`,
     { slug }
-  ) as Promise<{ movie: Movie | null; movies: Movie[] }>;
+  ) as Promise<{ movie: MovieType | null; movies: MovieType[] }>;
 });
 
 // --- Static paths for SSG ---
@@ -57,22 +56,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <PostsMenu />
-      <div className="flex flex-row w-full">
-        <div className="w-2/4">
-          <Filters itemsToFilter={movies} />
-        </div>
-        <div className="w-2/4">
-          <MovieContent
-            title={movie.title}
-            posterUrl={movieImage!}
-            releaseDate={movie.releaseDate}
-            popularity={movie.popularity}
-            overview={movie.overview?.[0]?.children?.[0]?.text || ""}
-            castMembers={movie.castMembers}
-          />
-        </div>
-      </div>
+      <MainMenu />
+      <Movie movie={movie} movies={movies} />
     </div>
   );
 }

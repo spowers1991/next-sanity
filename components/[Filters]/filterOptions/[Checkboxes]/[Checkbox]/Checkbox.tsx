@@ -1,19 +1,21 @@
+"use client";
+
 import React from "react";
 
 interface CheckboxProps {
   option: string;
-  isChecked: boolean;
+  checked: boolean;
   onChange: (checked: boolean) => void;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ option, isChecked, onChange }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ option, checked, onChange }) => {
   return (
     <label className="col-span-1 flex flex-row gap-x-1 items-center cursor-pointer">
       <input
         className="sr-only peer"
         type="checkbox"
         value={option}
-        checked={isChecked}
+        checked={checked}
         onChange={(e) => onChange(e.target.checked)}
       />
       <div className="relative w-6 h-6 bg-gray-200 border-white border-2 peer-checked:bg-[#434bed]"></div>

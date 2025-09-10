@@ -1,4 +1,4 @@
-import type { Post } from "@/lib/sanity/types/post";
+import type { Post } from "@/lib/sanity/types/Post";
 import type { PortableTextBlock } from "@portabletext/types";
 
 export interface FilteredItem extends Omit<Post, "_type" | "publishedAt" | "body"> {

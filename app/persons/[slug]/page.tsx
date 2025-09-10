@@ -1,5 +1,5 @@
 import { sanityClient } from "@/lib/sanity/api/client";
-import { Person } from '@/lib/sanity/types/person';
+import { Person } from '@/lib/sanity/types/Person';
 
 interface PersonPageProps {
   params: { slug: string };

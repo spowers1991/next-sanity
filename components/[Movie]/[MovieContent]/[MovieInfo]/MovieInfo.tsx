@@ -1,7 +1,7 @@
 // MovieInfo.tsx
-import type { Movie } from "@/lib/sanity/types/movie";
+import type { Movie } from "@/lib/sanity/types/Movie";
 import type { PortableTextBlock } from "@portabletext/types";
-import AnimatedText from "@/components/animations/text_reveal/TextReveal";
+import AnimatedText from "@/components/[TextReveal]/TextReveal";
 
 export type MovieInfoProps = Pick<Movie, "title" | "releaseDate" | "popularity"> & {
   overview?: PortableTextBlock[];

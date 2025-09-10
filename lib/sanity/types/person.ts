@@ -1,4 +1,4 @@
-import type { Post } from "@/lib/sanity/types/post";
+import type { Post } from "@/lib/sanity/types/Post";
 
 export interface Person extends Omit<Post, "_type" | "publishedAt" | "body"> {
   _type: "movie";

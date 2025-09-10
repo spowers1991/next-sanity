@@ -1,4 +1,4 @@
-import PostsMenu from "@/components/header/MainMenu";
+import PostsMenu from "@/components/[Header]/[MainMenu]/MainMenu";
 
 export default async function PostPage() {
   return (

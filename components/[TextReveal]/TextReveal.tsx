@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef } from "react";
-import { animateText } from "@/components/animations/text_reveal/actions/animateText";
+import { animateText } from "@/components/[TextReveal]/actions/animateText";
 
 interface AnimatedTextProps {
   text: string;

@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { sanityClient } from "@/lib/sanity/api/client";
-import type { Post } from "@/lib/sanity/types/post";
+import type { Post } from "@/lib/sanity/types/Post";
 import { POST_QUERY } from "@/lib/sanity/queries/getCurrentPost";
-import PostsMenu from "@/components/header/MainMenu";
+import PostsMenu from "@/components/[Header]/[MainMenu]/MainMenu";
 
 type Props = {
   params: {
