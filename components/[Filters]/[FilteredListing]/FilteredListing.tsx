@@ -1,7 +1,7 @@
 
 import React from "react";
-import { FilteredItem } from "../types/FilteredItem";
-import FiltersCard from "@/components/[Filters]/[FiltersCard]/FiltersCard";
+import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import FiltersCard from "./[FiltersCard]/FiltersCard";
 
 interface FilteredListingProps {
   filteredItems: FilteredItem[];

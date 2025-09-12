@@ -1,7 +1,7 @@
 // components/Movie/Movie.tsx
 import Filters from "@/components/[Filters]/Filters";
 import MovieContent from "@/components/[Movie]/[MovieContent]/MovieContent";
-import { Movie as MovieType } from "@/lib/sanity/types/Movie";
+import { Movie as MovieType } from "@/types/sanity/Movie";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 
 interface MovieProps {
@@ -15,7 +15,21 @@ export default function Movie({ movie, movies }: MovieProps) {
   return (
     <div className="flex flex-row w-full">
       <div className="w-2/4">
-        <Filters itemsToFilter={movies} />
+        <Filters
+          itemsToFilter={movies}
+          filtersToShow={[
+            {
+              type: "checkbox",
+              label: "Cast Members",
+              propertyToSearch: "castMembers.characterName",
+            },
+            {
+              type: "textSearch",
+              label: "Search by Title",
+              propertyToSearch: "title",
+            },
+          ]}
+        />
       </div>
       <div className="w-2/4">
         <MovieContent

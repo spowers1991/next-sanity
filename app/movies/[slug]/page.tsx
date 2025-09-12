@@ -1,11 +1,11 @@
 import { sanityClient } from "@/lib/sanity/api/client";
-import type { Movie as MovieType  } from "@/lib/sanity/types/Movie";
-import MainMenu from "@/components/[Header]/[MainMenu]/MainMenu";
-import { urlForImage } from "@/lib/sanity/helpers/image";
+import { cache } from "react";
 import { Metadata } from "next";
 import { setMovieMetadata } from "@/lib/seo/plugins/sanity/helpers/setMovieMetadata";
+import { urlForImage } from "@/lib/sanity/helpers/image";
+import type { Movie as MovieType  } from "@/types/sanity/Movie";
 import Movie from "@/components/[Movie]/Movie";
-import { cache } from "react";
+import Header from "@/components/[Header]/Header";
 
 interface MoviePageProps {
   params: { slug: string };
@@ -56,7 +56,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <MainMenu />
+      <Header />
       <Movie movie={movie} movies={movies} />
     </div>
   );

@@ -1,80 +1,64 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Checkboxes from "./filterOptions/[Checkboxes]/Checkboxes";
 import FilteredListing from "./[FilteredListing]/FilteredListing";
-import { updateFilters } from "./actions/updateFilters";
-import { useFilters } from "./state/FiltersContext";
-import { FilteredItem } from "./types/FilteredItem";
 import Button from "../[Button]/Button";
+import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import { useFilters } from "@/lib/filters/state/FiltersContext";
+import FiltersOptions from "./[FiltersOptions]/FiltersOptions";
+
+interface FilterConfigItem {
+  type: "checkbox" | "textSearch";
+  label: string;
+  propertyToSearch: string;
+}
 
 interface FilterProps {
   itemsToFilter: FilteredItem[];
+  filtersToShow: FilterConfigItem[];
 }
 
-const Filters: React.FC<FilterProps> = ({ itemsToFilter }) => {
-  // Destructure filter state and setters from context
+const Filters: React.FC<FilterProps> = ({ itemsToFilter, filtersToShow }) => {
   const {
     STATE_filtersOptions,
     STATE_itemsToFilter,
     STATE_filteredItems,
-    STATE_setFiltersOptions,
     STATE_setItemsToFilter,
-    STATE_setFilteredItems,
-    STATE_clearFilters
+    STATE_setShowAnimation,
+    STATE_clearFilters,
   } = useFilters();
 
-  /**
-   * Updates the selected filter options for a given property path
-   */
-  const filtersHandler = (selectedOptions: string[], propertyPath: string) => {
-    STATE_setFiltersOptions((prevFilters) => ({
-      ...prevFilters,
-      [propertyPath]: selectedOptions,
-    }));
-  };
-
-  /**
-   * Effect: update filtered items whenever the filters or base items change
-   */
+  // Initialize items to filter
   useEffect(() => {
-  STATE_setItemsToFilter(itemsToFilter);
-    updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
-  }, [
-    itemsToFilter,
-    STATE_itemsToFilter,
-    STATE_filtersOptions,
-    STATE_setFilteredItems,
-    STATE_setItemsToFilter
-  ]);
+    STATE_setItemsToFilter(itemsToFilter);
+  }, [itemsToFilter, STATE_setItemsToFilter]);
 
   return (
     <div className="container">
       <div className="grid grid-cols-2 gap-6 w-full">
-        {/* Filter Sidebar */}
         <div className="flex flex-col gap-6 bg-white p-6">
+          {/* Clear Filters Button */}
           {Object.keys(STATE_filtersOptions).length > 0 && (
             <Button
               label="Clear Filters"
-              onClick={STATE_clearFilters}
+              onClick={() => {
+                STATE_clearFilters();
+                STATE_setShowAnimation(true);
+              }}
               className="bg-red-900 text-white p-3"
             />
           )}
-          <Checkboxes
+
+          {/* Pass filtersToShow down */}
+          <FiltersOptions
             itemsToFilter={STATE_itemsToFilter}
-            label="Cast Members"
-            propertyToSearch="castMembers.characterName"
-            filtersOptions={STATE_filtersOptions}     
-            setFiltersOptions={STATE_setFiltersOptions} 
-            filtersHandler={filtersHandler}
+            filtersToShow={filtersToShow}
           />
         </div>
 
         {/* Filtered Listing */}
         <div className="w-full">
-          <FilteredListing 
-            filteredItems={STATE_filteredItems}
-          />
+          <FilteredListing filteredItems={STATE_filteredItems} />
         </div>
       </div>
     </div>
