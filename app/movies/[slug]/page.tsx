@@ -2,7 +2,6 @@ import { sanityClient } from "@/lib/sanity/api/client";
 import { cache } from "react";
 import { Metadata } from "next";
 import { setMovieMetadata } from "@/lib/seo/plugins/sanity/helpers/setMovieMetadata";
-import { urlForImage } from "@/lib/sanity/helpers/image";
 import type { Movie as MovieType  } from "@/types/sanity/Movie";
 import Movie from "@/components/[Movie]/Movie";
 import Header from "@/components/[Header]/Header";
@@ -51,8 +50,6 @@ export default async function MoviePage({ params }: MoviePageProps) {
   if (!movie) {
     return <p className="text-center text-gray-500">Movie not found</p>;
   }
-
-  const movieImage = movie.poster ? urlForImage(movie.poster).url() : undefined;
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">

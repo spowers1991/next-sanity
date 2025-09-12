@@ -1,5 +1,5 @@
 import { sanityClient } from "@/lib/sanity/api/client";
-import type { Movie } from "@/lib/sanity/custom_types/Movie";
+import type { Movie } from "@/types/sanity/Movie";
 
 export async function fetchMovieBySlug(slug: string): Promise<Movie | null> {
   const movie: Movie | null = await sanityClient.fetch(

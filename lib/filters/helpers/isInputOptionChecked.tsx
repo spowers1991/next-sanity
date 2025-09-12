@@ -1,6 +1,3 @@
-import { FilteredItem } from "@/filters/types/FilteredItem";
-import { updateFilters } from "../../actions/updateFilters";
-
 /**
  * Check if a given option is selected in the filtersOptions for a property
  * @param option - The value to check
