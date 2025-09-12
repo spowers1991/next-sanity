@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { urlForImage } from "@/lib/sanity/helpers/image";
-import { SanityDocument } from '@/lib/sanity/types/sanityDocument'
+import { SanityDocument } from '@/lib/sanity/types/SanityDocument'
 
 // Make post optional/partial so it can be dynamic
 export function setMetadata(
