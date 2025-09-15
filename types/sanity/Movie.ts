@@ -1,4 +1,4 @@
-import type { Post } from "@/lib/sanity/types/Post";
+import type { Post } from "@/lib/sanity/types/post";
 import type { PortableTextBlock } from "@portabletext/types";
 
 export interface Movie extends Omit<Post, "_type" | "publishedAt" | "body"> {

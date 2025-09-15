@@ -1,5 +1,5 @@
-import type { SanityImage } from "./SanityImage";
-import type { PortableTextBlock } from "./PortableText";
+import type { SanityImage } from "./sanityImage";
+import type { PortableTextBlock } from "./portableText";
 
 // Main Sanity document type
 export interface SanityDocument {

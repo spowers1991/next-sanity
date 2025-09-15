@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { sanityClient } from "@/lib/sanity/api/client";
-import type { Post } from "@/lib/sanity/types/Post";
+import type { Post } from "@/lib/sanity/types/post";
 import { POST_QUERY } from "@/lib/sanity/queries/getCurrentPost";
 import Header from "@/components/[Header]/Header";
 

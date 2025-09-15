@@ -1,6 +1,6 @@
 import { sanityClient } from "@/lib/sanity/api/client";
 import { ALL_MOVIES_QUERY } from "@/queries/sanity/getAllMovies";
-import { Post } from "@/lib/sanity/types/Post";
+import { Post } from "@/lib/sanity/types/post";
 import MenuItem from './[MenuItem]/MenuItem'
 
 export default async function MainMenu() {
