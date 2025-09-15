@@ -1,4 +1,4 @@
-import PostsMenu from "@/components/PostsMenu";
+import MainMenu from "@/components/[Header]/[MainMenu]/MainMenu";
 
 export default async function PostPage() {
   return (
@@ -6,7 +6,7 @@ export default async function PostPage() {
       <h1 className="text-3xl font-bold mb-6">
         All Posts
       </h1>
-      <PostsMenu />
+      <MainMenu />
     </main>
   );
 }

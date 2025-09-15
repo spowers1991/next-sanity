@@ -1,0 +1,62 @@
+"use client";
+
+import React from "react";
+import Checkboxes from "./[Checkboxes]/Checkboxes";
+// import TextSearch from "./[TextSearch]/TextSearch"; // Uncomment when ready
+import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import { useFilters } from "@/lib/filters/state/FiltersContext";
+
+interface FilterConfigItem {
+  type: "checkbox" | "textSearch"; // extendable
+  label: string;
+  propertyToSearch: string;
+}
+
+interface FiltersOptionsProps {
+  itemsToFilter: FilteredItem[];
+  filtersToShow: FilterConfigItem[]; // array of filters to render
+}
+
+const FiltersOptions: React.FC<FiltersOptionsProps> = ({ itemsToFilter, filtersToShow }) => {
+  const { STATE_filtersOptions, filtersHandler } = useFilters();
+
+  return (
+    <div className="flex flex-col gap-6">
+      {filtersToShow.map((filter, index) => {
+        if (filter.type === "checkbox") {
+          return (
+            <Checkboxes
+              key={index}
+              itemsToFilter={itemsToFilter}
+              label={filter.label}
+              propertyToSearch={filter.propertyToSearch}
+              filtersOptions={STATE_filtersOptions}
+              setFiltersOptions={() => {}}
+              filtersHandler={filtersHandler}
+            />
+          );
+        }
+
+        // Placeholder for TextSearch
+        if (filter.type === "textSearch") {
+          return (
+            // <TextSearch
+            //   key={index}
+            //   itemsToFilter={itemsToFilter}
+            //   label={filter.label}
+            //   propertyToSearch={filter.propertyToSearch}
+            //   filtersHandler={filtersHandler}
+            // />
+            <div key={index} className="text-gray-500 italic">
+              TextSearch placeholder
+            </div>
+          );
+        }
+
+        return null;
+      })}
+    </div>
+  );
+};
+
+export default FiltersOptions;
