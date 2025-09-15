@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Post } from "@/lib/sanity/types/post";
+import { Post } from "@/lib/sanity/types/Post";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 
 interface PostItemProps {
