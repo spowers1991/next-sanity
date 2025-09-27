@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { FilteredItem } from "../types/FilteredItem";
 import { updateFilters } from "../actions/updateFilters";
+import { filtersHandler as handleFilters } from "../actions/filtersHandler"; 
 
 interface FiltersContextType {
   STATE_filtersOptions: Record<string, string[]>;
@@ -25,28 +26,14 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [STATE_filteredItems, STATE_setFilteredItems] = useState<FilteredItem[]>([]);
   const [STATE_showAnimation, STATE_setShowAnimation] = useState<boolean>(true);
 
-  // Handler to update selected filter options
   const filtersHandler = (selectedOptions: string[], propertyPath: string) => {
-    STATE_setFiltersOptions(prev => {
-      const newFilters = { ...prev };
-
-      if (selectedOptions.length === 0) {
-        // remove key if no options selected
-        delete newFilters[propertyPath];
-      } else {
-        newFilters[propertyPath] = selectedOptions;
-      }
-
-      return newFilters;
-    });
+    handleFilters(selectedOptions, propertyPath, STATE_setFiltersOptions);
   };
 
-  // Clear filters
   const STATE_clearFilters = () => {
     STATE_setFiltersOptions({});
   };
 
-  // Effect to update filtered items whenever items or filters change
   useEffect(() => {
     updateFilters(STATE_itemsToFilter, STATE_filtersOptions, STATE_setFilteredItems);
   }, [STATE_itemsToFilter, STATE_filtersOptions]);
@@ -63,7 +50,7 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         STATE_showAnimation,
         STATE_setShowAnimation,
         STATE_clearFilters,
-        filtersHandler
+        filtersHandler,
       }}
     >
       {children}
