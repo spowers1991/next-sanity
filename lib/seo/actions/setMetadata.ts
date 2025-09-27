@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import type { Movie } from "@/types/sanity/Movie";
+import type { Movie } from "@/services/sanity/movie/types/Movie";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 
 export function setMetadata(movie: Movie | null): Metadata {

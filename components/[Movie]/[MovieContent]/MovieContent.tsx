@@ -1,7 +1,7 @@
 // MovieContent.tsx
 import MoviePoster from "./[MoviePoster]/MoviePoster";
 import MovieInfo from "./[MovieInfo]/MovieInfo";
-import type { Movie } from "@/types/sanity/Movie";
+import type { Movie } from "@/services/sanity/movie/types/Movie";
 import { transformString } from "@/lib/parsers/transformString"
 
 export type MovieContentProps = Pick<Movie, "title" | "releaseDate" | "popularity" | "overview" | "castMembers"> & {

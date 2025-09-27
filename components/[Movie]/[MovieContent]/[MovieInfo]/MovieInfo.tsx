@@ -1,5 +1,5 @@
 // MovieInfo.tsx
-import type { Movie } from "@/types/sanity/Movie";
+import type { Movie } from "@/services/sanity/movie/types/Movie";
 import type { PortableTextBlock } from "@portabletext/types";
 import AnimatedText from "@/components/[TextReveal]/TextReveal";
 
