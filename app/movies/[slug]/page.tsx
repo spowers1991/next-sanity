@@ -3,6 +3,7 @@ import { generateStaticParamsForType } from "@/lib/sanity/ssg/generateStaticPara
 import { getMovie } from "@/services/sanity/movie/queries/getMovie";
 import { getMovies } from "@/services/sanity/movie/queries/getMovies";
 import { setMetadata } from "@/lib/seo/actions/setMetadata";
+import { setRichText } from "@/lib/seo/richtext/actions/setRichText";
 import Movie from "@/components/[Movie]/Movie";
 
 interface PageProps {
@@ -33,8 +34,19 @@ export default async function MoviePage({ params }: PageProps) {
     return <p className="text-center text-gray-500">Movie not found</p>;
   }
 
+  // Build JSON-LD structured data
+  const jsonLd = setRichText(movie, `https://yoursite.com/movies/${slug}`);
+
   return (
     <div className="min-h-screen bg-gray-950 text-white">
+      {/* Inject JSON-LD structured data */}
+      {jsonLd && (console.log(jsonLd),
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+
       <Movie movie={movie} movies={movies} />
     </div>
   );
