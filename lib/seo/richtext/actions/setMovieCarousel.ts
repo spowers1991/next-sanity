@@ -6,27 +6,24 @@ type JsonLd = Record<string, unknown>;
 export function setMovieCarousel(movies: Movie[] | null, baseUrl: string): JsonLd | null {
   if (!movies || movies.length === 0) return null;
 
-  return {
+    return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: movies.map((movie, i) => {
-      const imageUrl = movie.poster ? urlForImage(movie.poster).url() : undefined;
-      const slug = typeof movie.slug === "string" ? movie.slug : movie.slug?.current; // ✅ fix
+        itemListElement: movies.map((movie, i) => {
+            const imageUrl = movie.poster ? urlForImage(movie.poster).url() : undefined;
+            const slug = typeof movie.slug === "string" ? movie.slug : movie.slug?.current;
 
-      return {
-        "@type": "ListItem",
-        position: i + 1,
-        url: `${baseUrl}/movies/${slug}`, // ✅ will now resolve properly
-        item: {
-          "@type": "Movie",
-          name: movie.title,
-          ...(imageUrl ? { image: imageUrl } : {}),
-          ...(movie.releaseDate ? { datePublished: movie.releaseDate } : {}),
-          ...(slug
-            ? { url: `${baseUrl}/movies/${slug}` } // ✅ add Movie-level URL
-            : {})
-        }
-      };
-    }),
-  };
+            return {
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+                "@type": "Movie",
+                name: movie.title,
+                url: `${baseUrl}/movies/${slug}`,   // ✅ only here
+                ...(imageUrl ? { image: imageUrl } : {}),
+                ...(movie.releaseDate ? { datePublished: movie.releaseDate } : {})
+            }
+            };
+        })
+    };
 }
