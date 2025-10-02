@@ -2,14 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
-import { Post } from "@/lib/sanity/types/Post";
+import type { Movie } from "@/services/sanity/movie/types/Movie";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 
 interface PostItemProps {
-  post: Post;
+  item: Movie;
 }
 
-const PostItem: React.FC<PostItemProps> = ({ post }) => {
+const MenuItem: React.FC<PostItemProps> = ({ item }) => {
   const { STATE_setShowAnimation } = useFilters();
 
   const handleClick = () => {
@@ -17,27 +17,16 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
   };
 
   return (
-    post._type === "post" ?
-        <li key={post._id} className="hover:underline">
-            <Link href={`/${post?.slug?.current}`}>
-                <div onClick={handleClick}>
-                    {
-                        post.title ? post.title : post.name
-                    }
-                </div>
-            </Link>
-        </li>
-    :
-        <li key={post._id} className="hover:underline">
-            <Link href={`/${post._type}s/${post?.slug?.current}`}>
-                <div onClick={handleClick}>
-                    {
-                        post.title ? post.title : post.name
-                    }
-                </div>
-            </Link>
-        </li>
+    <li key={item._id} className="hover:underline">
+        <Link href={`/${item._type}s/${item?.slug?.current}`}>
+            <div onClick={handleClick}>
+                {
+                    item.title ? item.title : item.name
+                }
+            </div>
+        </Link>
+    </li>
   );
 };
 
-export default PostItem;
+export default MenuItem;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/css/globals.css";
 import { FiltersProvider } from "@/lib/filters/state/FiltersContext";
+import Header from "@/components/[Header]/Header"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <FiltersProvider>
-          {children}
+          <div className="min-h-screen bg-gray-950 text-white">
+            <Header /> 
+            {children}
+          </div>
         </FiltersProvider>
       </body>
     </html>

@@ -1,51 +1,33 @@
-import { sanityClient } from "@/lib/sanity/api/client";
-import { cache } from "react";
-import { Metadata } from "next";
-import { setMovieMetadata } from "@/lib/seo/plugins/sanity/helpers/setMovieMetadata";
-import type { Movie as MovieType  } from "@/types/sanity/Movie";
+import type { Metadata } from "next";
+import { generateStaticParamsForType } from "@/lib/sanity/ssg/generateStaticParams";
+import { getMovie } from "@/services/sanity/movie/queries/getMovie";
+import { getMovies } from "@/services/sanity/movie/queries/getMovies";
+import { setMetadata } from "@/lib/seo/actions/setMetadata";
 import Movie from "@/components/[Movie]/Movie";
-import Header from "@/components/[Header]/Header";
 
-interface MoviePageProps {
-  params: { slug: string };
+interface PageProps {
+  params: {
+    slug: string;
+  };
 }
 
-// Incremental static regeneration (optional)
-export const revalidate = 60; // seconds
+export const revalidate = 60; // ISR seconds
 
-// --- Cached Sanity queries ---
-const getAllSlugs = cache(async () => {
-  const movies: MovieType[] = await sanityClient.fetch(`*[_type == "movie"]{ slug }`);
-  return movies;
-});
-
-const getMovieAndMovies = cache(async (slug: string) => {
-  return sanityClient.fetch(
-    `{
-      "movie": *[_type == "movie" && slug.current == $slug][0],
-      "movies": *[_type == "movie"] | order(releaseDate desc)
-    }`,
-    { slug }
-  ) as Promise<{ movie: MovieType | null; movies: MovieType[] }>;
-});
-
-// --- Static paths for SSG ---
 export async function generateStaticParams() {
-  const movies = await getAllSlugs();
-  return movies.map((movie) => ({ slug: movie.slug.current }));
+  return generateStaticParamsForType("movie", ["slug"]);
 }
 
-// --- Metadata for SEO ---
-export async function generateMetadata({ params }: MoviePageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { movie } = await getMovieAndMovies(slug);
-  return setMovieMetadata(movie, slug);
+  const movie = await getMovie(slug);
+  return setMetadata(movie);
 }
 
-// --- Page Component ---
-export default async function MoviePage({ params }: MoviePageProps) {
+export default async function MoviePage({ params }: PageProps) {
   const { slug } = await params;
-  const { movie, movies } = await getMovieAndMovies(slug);
+
+  // Fetch movie and all movies in parallel for efficiency
+  const [movie, movies] = await Promise.all([getMovie(slug), getMovies()]);
 
   if (!movie) {
     return <p className="text-center text-gray-500">Movie not found</p>;
@@ -53,7 +35,6 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <Header />
       <Movie movie={movie} movies={movies} />
     </div>
   );

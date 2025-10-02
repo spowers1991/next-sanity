@@ -12,7 +12,7 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, className }) => {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded-md font-semibold uppercase text-xs ${className}`}
+      className={`px-4 py-2 rounded-md font-semibold uppercase text-xs cursor-pointer ${className}`}
     >
       {label}
     </button>

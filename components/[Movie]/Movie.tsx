@@ -1,7 +1,7 @@
 // components/Movie/Movie.tsx
 import Filters from "@/components/[Filters]/Filters";
 import MovieContent from "@/components/[Movie]/[MovieContent]/MovieContent";
-import { Movie as MovieType } from "@/types/sanity/Movie";
+import { Movie as MovieType } from "@/services/sanity/movie/types/Movie";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 
 interface MovieProps {
