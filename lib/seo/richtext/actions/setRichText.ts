@@ -1,9 +1,15 @@
 import type { Movie } from "@/services/sanity/movie/types/Movie";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 
-export function setRichText(post: Movie | null, pageUrl: string) {
+type JsonLd = Record<string, unknown>;
+
+/**
+ * Create JSON-LD structured data for a given post (Movie for now).
+ */
+export function setRichText(post: Movie | null, pageUrl: string): JsonLd | null {
   if (!post) return null;
 
+  // Use overview text directly if available, otherwise fallback
   const description =
     (post?.overview?.[0]?.children?.[0]?.text as string) ||
     "Check out this content!";
@@ -12,7 +18,7 @@ export function setRichText(post: Movie | null, pageUrl: string) {
 
   const schemaType = post._type === "movie" ? "Movie" : "Post";
 
-  const jsonLd: Record<string, any> = {
+  const jsonLd: JsonLd = {
     "@context": "https://schema.org",
     "@type": schemaType,
     headline: post.title ?? "Not Found",
@@ -24,14 +30,14 @@ export function setRichText(post: Movie | null, pageUrl: string) {
     jsonLd["image"] = imageUrl;
   }
 
-  if ((post as any).releaseDate) {
-    jsonLd["datePublished"] = (post as any).releaseDate;
+  if ((post as Movie & { releaseDate?: string }).releaseDate) {
+    jsonLd["datePublished"] = (post as Movie & { releaseDate?: string }).releaseDate;
   }
 
-  if ((post as any).author) {
+  if ((post as Movie & { author?: { name: string } }).author) {
     jsonLd["author"] = {
       "@type": "Person",
-      name: (post as any).author?.name,
+      name: (post as Movie & { author?: { name: string } }).author?.name,
     };
   }
 
