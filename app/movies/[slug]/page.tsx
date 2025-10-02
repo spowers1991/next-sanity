@@ -4,6 +4,7 @@ import { getMovie } from "@/services/sanity/movie/queries/getMovie";
 import { getMovies } from "@/services/sanity/movie/queries/getMovies";
 import { setMetadata } from "@/lib/seo/actions/setMetadata";
 import { setRichText } from "@/lib/seo/richtext/actions/setRichText";
+import { setMovieCarousel } from "@/lib/seo/richtext/actions/setMovieCarousel";
 import Movie from "@/components/[Movie]/Movie";
 
 interface PageProps {
@@ -34,16 +35,25 @@ export default async function MoviePage({ params }: PageProps) {
     return <p className="text-center text-gray-500">Movie not found</p>;
   }
 
-  // Build JSON-LD structured data
-  const jsonLd = setRichText(movie, `https://yoursite.com/movies/${slug}`);
+   const baseUrl = "https://yoursite.com"; // maybe from env
+  const jsonLdMovie = setRichText(movie, `${baseUrl}/movies/${slug}`);
+  const jsonLdCarousel = setMovieCarousel(movies, baseUrl);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      {/* Inject JSON-LD structured data */}
-      {jsonLd && (console.log(jsonLd),
+
+      {jsonLdMovie && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdMovie) }}
+        />
+      )}
+
+      {jsonLdCarousel && (
+        console.log(jsonLdCarousel),
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdCarousel) }}
         />
       )}
 
