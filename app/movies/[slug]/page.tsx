@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const movie = await getMovie(slug);
 
   // Pass the full movie object directly to setMetadata (which handles image conversion)
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function MoviePage({ params }: PageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const [movie, movies] = await Promise.all([getMovie(slug), getMovies()]);
 
