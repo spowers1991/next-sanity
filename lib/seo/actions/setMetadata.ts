@@ -1,11 +1,10 @@
 import { Metadata } from "next";
-import type { Movie } from "@/services/sanity/movie/types/Movie";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 
-export function setMetadata(movie: Movie | null): Metadata {
-  const title = movie?.title ?? "Movie Not Found";
-  const description = movie?.overview?.[0]?.children?.[0]?.text ?? "Check out this movie!";
-  const imageUrl = movie?.poster ? urlForImage(movie.poster).url() : undefined;
+export function setMetadata(item: Metadata & { image?: ImageBitmap } | null): Metadata {
+  const title = item?.title ?? "Movie Not Found";
+  const description = item?.description ?? "No description available.";
+  const imageUrl = item?.image ? urlForImage(item.image).url() : null;
 
   return {
     title,

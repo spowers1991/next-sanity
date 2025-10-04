@@ -3,7 +3,10 @@ import { generateStaticParamsForType } from "@/lib/sanity/ssg/generateStaticPara
 import { getMovie } from "@/services/sanity/movie/queries/getMovie";
 import { getMovies } from "@/services/sanity/movie/queries/getMovies";
 import { setMetadata } from "@/lib/seo/actions/setMetadata";
+import { setStructuredData } from "@/services/seo/actions/setStructuredData";
 import Movie from "@/components/[Movie]/Movie";
+import JsonLdScript from "@/lib/seo/components/JsonLdScript";
+import type { StructuredContentBase } from "@/services/seo/types/StructuredContentBase";
 
 interface PageProps {
   params: {
@@ -20,13 +23,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const movie = await getMovie(slug);
+
+  // Pass the full movie object directly to setMetadata (which handles image conversion)
   return setMetadata(movie);
 }
 
 export default async function MoviePage({ params }: PageProps) {
   const { slug } = await params;
 
-  // Fetch movie and all movies in parallel for efficiency
   const [movie, movies] = await Promise.all([getMovie(slug), getMovies()]);
 
   if (!movie) {
@@ -35,6 +39,13 @@ export default async function MoviePage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
+      <JsonLdScript
+        json={setStructuredData(
+          movie as StructuredContentBase,
+          `${process.env.NEXT_PUBLIC_SITE_URL}/movies/${slug}`
+        )}
+      />
+
       <Movie movie={movie} movies={movies} />
     </div>
   );
