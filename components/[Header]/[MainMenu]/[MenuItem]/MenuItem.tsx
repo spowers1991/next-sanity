@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import type { Movie } from "@/services/sanity/movie/types/Movie";
+import type { Movie } from "@/services/sanity/movies/types/Movie";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 
 interface PostItemProps {

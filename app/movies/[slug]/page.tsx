@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { generateStaticParamsForType } from "@/lib/sanity/ssg/generateStaticParams";
-import { getMovie } from "@/services/sanity/movie/queries/getMovie";
-import { getMovies } from "@/services/sanity/movie/queries/getMovies";
+import { getMovie } from "@/services/sanity/movies/queries/getMovie";
 import { setMetadata } from "@/lib/seo/actions/setMetadata";
 import { setStructuredData } from "@/services/seo/actions/setStructuredData";
-import Movie from "@/components/[Movie]/Movie";
+import Movie from "@/components/[Movies]/[Movie]/Movie";
 import JsonLdScript from "@/lib/seo/components/JsonLdScript";
 import type { StructuredContentBase } from "@/services/seo/types/StructuredContentBase";
 
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function MoviePage({ params }: PageProps) {
   const { slug } = await params;
 
-  const [movie, movies] = await Promise.all([getMovie(slug), getMovies()]);
+  const movie = await getMovie(slug);
 
   if (!movie) {
     return <p className="text-center text-gray-500">Movie not found</p>;
@@ -46,7 +45,7 @@ export default async function MoviePage({ params }: PageProps) {
         )}
       />
 
-      <Movie movie={movie} movies={movies} />
+      <Movie movie={movie}/>
     </div>
   );
 }

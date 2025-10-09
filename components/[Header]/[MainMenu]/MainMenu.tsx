@@ -1,9 +1,13 @@
-import { getMovies } from "@/services/sanity/movie/queries/getMovies";
+"use client"
+
+import { useMovies } from "@/services/sanity/movies/state/MoviesContext";
 import MenuItem from './[MenuItem]/MenuItem'
 
-export default async function MainMenu() {
+export default function MainMenu() {
 
-  const [items] = await Promise.all([getMovies()]);
+  const { movies } = useMovies();
+
+  const items = movies;
 
   return (
     <div className="flex w-full py-3 px-3">
