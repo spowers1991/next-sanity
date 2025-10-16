@@ -1,4 +1,4 @@
-import type { Movie } from "@/services/sanity/movie/types/Movie";
+import type { Movie } from "@/services/sanity/movies/types/Movie";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 
 type JsonLd = Record<string, unknown>;

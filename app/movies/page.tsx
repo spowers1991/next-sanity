@@ -1,12 +1,9 @@
-// app/movies/page.tsx
-
-import { Metadata } from "next";
-import { getMovies } from "@/services/sanity/movie/queries/getMovies";
+import type { Metadata } from "next";
 import { setMetadata } from "@/lib/seo/actions/setMetadata";
 import { setMovieCarousel } from "@/services/seo/actions/setMovieCarousel";
 import JsonLdScript from "@/lib/seo/components/JsonLdScript";
-import Grid from "@/components/[Grid]/Grid";
-import GridItem from "@/components/[Grid]/[GridItem]/GridItem";
+import { getMovies } from "@/services/sanity/movies/queries/getMovies";
+import Movies from "@/components/[Movies]/Movies"; 
 
 export const metadata: Metadata = setMetadata({
   title: "Movie Archive",
@@ -14,20 +11,20 @@ export const metadata: Metadata = setMetadata({
 });
 
 export default async function MoviesArchivePage() {
+  // ✅ Fetch server-side for SEO + structured data
   const movies = await getMovies();
 
   return (
     <>
-      <JsonLdScript json={setMovieCarousel(movies,`${process.env.NEXT_PUBLIC_SITE_URL}/movies/`)} />
+      <JsonLdScript
+        json={setMovieCarousel(
+          movies,
+          `${process.env.NEXT_PUBLIC_SITE_URL}/movies/`
+        )}
+      />
 
-      <div style={{ padding: "2rem" }}>
-        <h1>Movie Archive</h1>
-        <Grid columnsClassName="grid-cols-2 md:grid-cols-4 xl:grid-cols-6" className="max-w-7xl mx-auto">
-          {movies.map(movie => (
-            <GridItem key={movie._id} title={movie.title} slug={movie.slug.current} hrefPrefix="/movies" />
-          ))}
-        </Grid>
-      </div>
+      {/* 👇 Hydrate Movies client component */}
+      <Movies initialMovies={movies} />
     </>
   );
 }

@@ -1,15 +1,19 @@
-// components/Movie/Movie.tsx
+"use client"
+
 import Filters from "@/components/[Filters]/Filters";
-import MovieContent from "@/components/[Movie]/[MovieContent]/MovieContent";
-import { Movie as MovieType } from "@/services/sanity/movie/types/Movie";
+import MovieContent from "@/components/[Movies]/[Movie]/[MovieContent]/MovieContent";
+import { Movie as MovieType } from "@/services/sanity/movies/types/Movie";
+import { useMovies } from "@/services/sanity/movies/state/MoviesContext";
 import { urlForImage } from "@/lib/sanity/helpers/image";
 
 interface MovieProps {
   movie: MovieType;
-  movies: MovieType[];
 }
 
-export default function Movie({ movie, movies }: MovieProps) {
+export default function Movie({ movie }: MovieProps) {
+
+  const { movies } = useMovies();
+
   const movieImage = movie.poster ? urlForImage(movie.poster).url() : undefined;
 
   return (

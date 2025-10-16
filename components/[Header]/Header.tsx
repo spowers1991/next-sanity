@@ -1,5 +1,5 @@
 // components/Header.tsx
-import MainMenu from "./[MainMenu]/MainMenu"; // or "./PostsMenu" if that's the actual file
+import MainMenu from "./[MainMenu]/MainMenu"; 
 
 export default function Header() {
   return (
