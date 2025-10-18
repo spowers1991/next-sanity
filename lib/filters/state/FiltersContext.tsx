@@ -3,31 +3,31 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { FilteredItem } from "../types/FilteredItem";
 import { updateFilters } from "../actions/updateFilters";
-import { filtersHandler as handleFilters } from "../actions/filtersHandler"; 
+import { filtersOptionsHandler as handleFiltersOptions } from "../actions/filtersHandler"; 
 
 interface FiltersContextType {
-  STATE_filtersOptions: Record<string, string[]>;
   STATE_itemsToFilter: FilteredItem[];
-  STATE_filteredItems: FilteredItem[];
-  STATE_setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
   STATE_setItemsToFilter: React.Dispatch<React.SetStateAction<FilteredItem[]>>;
+  STATE_filtersOptions: Record<string, string[]>;
+  STATE_setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
+  STATE_filtersOptionsHandler: (propertyPath: string, selectedOptions: string[]) => void;
+  STATE_filteredItems: FilteredItem[];
   STATE_setFilteredItems: React.Dispatch<React.SetStateAction<FilteredItem[]>>;
   STATE_showAnimation: boolean;
   STATE_setShowAnimation: React.Dispatch<React.SetStateAction<boolean>>;
   STATE_clearFilters: () => void;
-  filtersHandler: (selectedOptions: string[], propertyPath: string) => void;
 }
 
 const FiltersContext = createContext<FiltersContextType | undefined>(undefined);
 
 export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [STATE_filtersOptions, STATE_setFiltersOptions] = useState<Record<string, string[]>>({});
   const [STATE_itemsToFilter, STATE_setItemsToFilter] = useState<FilteredItem[]>([]);
+  const [STATE_filtersOptions, STATE_setFiltersOptions] = useState<Record<string, string[]>>({});
   const [STATE_filteredItems, STATE_setFilteredItems] = useState<FilteredItem[]>([]);
   const [STATE_showAnimation, STATE_setShowAnimation] = useState<boolean>(true);
 
-  const filtersHandler = (selectedOptions: string[], propertyPath: string) => {
-    handleFilters(selectedOptions, propertyPath, STATE_setFiltersOptions);
+  const STATE_filtersOptionsHandler = ( propertyPath: string, selectedOptions: string[]) => {
+    handleFiltersOptions(propertyPath, selectedOptions, STATE_setFiltersOptions);
   };
 
   const STATE_clearFilters = () => {
@@ -41,16 +41,16 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   return (
     <FiltersContext.Provider
       value={{
-        STATE_filtersOptions,
         STATE_itemsToFilter,
-        STATE_filteredItems,
-        STATE_setFiltersOptions,
         STATE_setItemsToFilter,
+        STATE_filtersOptions,
+        STATE_setFiltersOptions,
+        STATE_filtersOptionsHandler,
+        STATE_filteredItems,
         STATE_setFilteredItems,
         STATE_showAnimation,
         STATE_setShowAnimation,
         STATE_clearFilters,
-        filtersHandler,
       }}
     >
       {children}

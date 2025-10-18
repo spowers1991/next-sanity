@@ -15,8 +15,8 @@ interface FilterProps {
 
 const Filters: React.FC<FilterProps> = ({ itemsToFilter, filtersToShow }) => {
   const {
-    STATE_filtersOptions,
     STATE_itemsToFilter,
+    STATE_filtersOptions,
     STATE_filteredItems,
     STATE_setItemsToFilter,
     STATE_setShowAnimation,

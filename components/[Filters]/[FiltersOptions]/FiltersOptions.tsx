@@ -5,7 +5,6 @@ import { FilterConfigItem } from "@/lib/filters/types/FilterConfigItem";
 import Checkboxes from "./[Checkboxes]/Checkboxes";
 // import TextSearch from "./[TextSearch]/TextSearch"; // Uncomment when ready
 import { FilteredItem } from "@/lib/filters/types/FilteredItem";
-import { useFilters } from "@/lib/filters/state/FiltersContext";
 
 interface FiltersOptionsProps {
   itemsToFilter: FilteredItem[];
@@ -13,7 +12,6 @@ interface FiltersOptionsProps {
 }
 
 const FiltersOptions: React.FC<FiltersOptionsProps> = ({ itemsToFilter, filtersToShow }) => {
-  const { STATE_filtersOptions, filtersHandler } = useFilters();
 
   return (
     <div className="flex flex-col gap-6">
@@ -25,9 +23,6 @@ const FiltersOptions: React.FC<FiltersOptionsProps> = ({ itemsToFilter, filtersT
               itemsToFilter={itemsToFilter}
               label={filter.label}
               propertyToSearch={filter.propertyToSearch}
-              filtersOptions={STATE_filtersOptions}
-              setFiltersOptions={() => {}}
-              filtersHandler={filtersHandler}
             />
           );
         }
@@ -40,7 +35,6 @@ const FiltersOptions: React.FC<FiltersOptionsProps> = ({ itemsToFilter, filtersT
             //   itemsToFilter={itemsToFilter}
             //   label={filter.label}
             //   propertyToSearch={filter.propertyToSearch}
-            //   filtersHandler={filtersHandler}
             // />
             <div key={index} className="text-gray-500 italic">
               TextSearch placeholder
