@@ -1,16 +1,11 @@
 "use client";
 
 import React from "react";
+import { FilterConfigItem } from "@/lib/filters/types/FilterConfigItem";
 import Checkboxes from "./[Checkboxes]/Checkboxes";
 // import TextSearch from "./[TextSearch]/TextSearch"; // Uncomment when ready
 import { FilteredItem } from "@/lib/filters/types/FilteredItem";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
-
-interface FilterConfigItem {
-  type: "checkbox" | "textSearch"; // extendable
-  label: string;
-  propertyToSearch: string;
-}
 
 interface FiltersOptionsProps {
   itemsToFilter: FilteredItem[];
