@@ -3,13 +3,13 @@
 import React, { useEffect } from "react";
 import FilteredListing from "./[FilteredListing]/FilteredListing";
 import Button from "../[Button]/Button";
-import { FilterItem } from "@/services/filters/types/FilterItem";
+import { FiltersItem } from "@/services/filters/types/FiltersItem";
 import { FiltersConfig } from "@/lib/filters/types/FiltersConfig";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 import FiltersOptions from "./[FiltersOptions]/FiltersOptions";
 
 interface FilterProps {
-  itemsToFilter: FilterItem[];
+  itemsToFilter: FiltersItem[];
   filtersToShow: FiltersConfig[];
 }
 

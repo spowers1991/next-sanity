@@ -1,18 +1,18 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { FilterItem } from "../../../services/filters/types/FilterItem";
+import { FiltersItem } from "../../../services/filters/types/FiltersItem";
 import { updateFilters } from "../actions/updateFilters";
 import { filtersOptionsHandler as handleFiltersOptions } from "../actions/filtersHandler"; 
 
 interface FiltersContextType {
-  STATE_itemsToFilter: FilterItem[];
-  STATE_setItemsToFilter: React.Dispatch<React.SetStateAction<FilterItem[]>>;
+  STATE_itemsToFilter: FiltersItem[];
+  STATE_setItemsToFilter: React.Dispatch<React.SetStateAction<FiltersItem[]>>;
   STATE_filtersOptions: Record<string, string[]>;
   STATE_setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
   STATE_filtersOptionsHandler: (propertyPath: string, selectedOptions: string[]) => void;
-  STATE_filteredItems: FilterItem[];
-  STATE_setFilteredItems: React.Dispatch<React.SetStateAction<FilterItem[]>>;
+  STATE_filteredItems: FiltersItem[];
+  STATE_setFilteredItems: React.Dispatch<React.SetStateAction<FiltersItem[]>>;
   STATE_showAnimation: boolean;
   STATE_setShowAnimation: React.Dispatch<React.SetStateAction<boolean>>;
   STATE_clearFilters: () => void;
@@ -21,9 +21,9 @@ interface FiltersContextType {
 const FiltersContext = createContext<FiltersContextType | undefined>(undefined);
 
 export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [STATE_itemsToFilter, STATE_setItemsToFilter] = useState<FilterItem[]>([]);
+  const [STATE_itemsToFilter, STATE_setItemsToFilter] = useState<FiltersItem[]>([]);
   const [STATE_filtersOptions, STATE_setFiltersOptions] = useState<Record<string, string[]>>({});
-  const [STATE_filteredItems, STATE_setFilteredItems] = useState<FilterItem[]>([]);
+  const [STATE_filteredItems, STATE_setFilteredItems] = useState<FiltersItem[]>([]);
   const [STATE_showAnimation, STATE_setShowAnimation] = useState<boolean>(true);
 
   const STATE_filtersOptionsHandler = ( propertyPath: string, selectedOptions: string[]) => {

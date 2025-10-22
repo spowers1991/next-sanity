@@ -4,10 +4,10 @@ import React from "react";
 import { FiltersConfig } from "@/lib/filters/types/FiltersConfig";
 import Checkboxes from "./[Checkboxes]/Checkboxes";
 // import TextSearch from "./[TextSearch]/TextSearch"; // Uncomment when ready
-import { FilterItem } from "@/services/filters/types/FilterItem";
+import { FiltersItem } from "@/services/filters/types/FiltersItem";
 
 interface FiltersOptionsProps {
-  itemsToFilter: FilterItem[];
+  itemsToFilter: FiltersItem[];
   filtersToShow: FiltersConfig[]; // array of filters to render
 }
 
