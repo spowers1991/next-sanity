@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
-import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import { FiltersItem } from "@/services/filters/types/FiltersItem";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 import { animateCard } from "./animations/animateCard";
 import { handleCardClick } from "./animations/handleCardClick";
 
 interface FiltersCardProps {
-  filteredItem: FilteredItem;
+  filteredItem: FiltersItem;
   index?: number;
 }
 

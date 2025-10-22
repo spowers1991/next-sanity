@@ -1,8 +1,8 @@
-// filtersHandler.ts
+// filtersOptionsHandler.ts
 
-export const filtersHandler = (
-  selectedOptions: string[],
+export const filtersOptionsHandler = (
   propertyPath: string,
+  selectedOptions: string[],
   setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>
 ) => {
   setFiltersOptions(prev => {

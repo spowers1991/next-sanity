@@ -1,10 +1,10 @@
 
 import React from "react";
-import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import { FiltersItem } from "@/services/filters/types/FiltersItem";
 import FiltersCard from "./[FiltersCard]/FiltersCard";
 
 interface FilteredListingProps {
-  filteredItems: FilteredItem[];
+  filteredItems: FiltersItem[];
 }
 
 const FilteredListing: React.FC<FilteredListingProps> = ({ filteredItems }) => {

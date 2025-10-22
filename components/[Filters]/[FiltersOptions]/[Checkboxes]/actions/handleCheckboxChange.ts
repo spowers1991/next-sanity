@@ -16,10 +16,10 @@ export function handleCheckboxChange(
   isChecked: boolean,
   selectedOptions: string[],
   setSelectedOptions: React.Dispatch<React.SetStateAction<string[]>>,
-  filtersOptions: Record<string, string[]>,
-  setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>, 
   propertyPath: string,
-  filtersHandler: (selectedOptions: string[], propertyPath: string) => void,
+  STATE_filtersOptions: Record<string, string[]>,
+  STATE_setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>, 
+  STATE_filtersOptionsHandler: (propertyPath: string, selectedOptions: string[]) => void,
   STATE_setShowAnimation: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   STATE_setShowAnimation(true)
@@ -32,10 +32,10 @@ export function handleCheckboxChange(
   setSelectedOptions(updatedOptions);
 
   // Update global filters state
-  setFiltersOptions({
-    ...filtersOptions,
+  STATE_setFiltersOptions({
+    ...STATE_filtersOptions,
     [propertyPath]: updatedOptions,
   });
-  // Trigger filtersHandler
-  filtersHandler(updatedOptions, propertyPath);
+  // Trigger filtersOptionsHandler
+  STATE_filtersOptionsHandler(propertyPath, updatedOptions);
 }

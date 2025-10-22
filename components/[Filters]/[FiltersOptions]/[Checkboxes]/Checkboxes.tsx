@@ -1,39 +1,34 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import { FiltersItem } from "@/services/filters/types/FiltersItem";
 import { extractPropertiesNames } from "@/lib/filters/helpers/extractPropertiesNames";
-import { handleCheckboxChange } from "@/lib/filters/actions/handleCheckboxChange";
+import { handleCheckboxChange } from "@/components/[Filters]/[FiltersOptions]/[Checkboxes]/actions/handleCheckboxChange";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 import Checkbox from "@/components/[Filters]/[FiltersOptions]/[Checkboxes]/[Checkbox]/Checkbox";
 
 interface CheckboxProps {
-  itemsToFilter: FilteredItem[];
+  itemsToFilter: FiltersItem[];
   label: string;
   propertyToSearch: string;
-  filtersOptions: Record<string, string[]>;
-  setFiltersOptions: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
-  filtersHandler: (selectedOptions: string[], propertyPath: string) => void;
 }
 
 const Checkboxes: React.FC<CheckboxProps> = ({
   itemsToFilter,
   label,
   propertyToSearch,
-  filtersOptions,
-  setFiltersOptions,
-  filtersHandler,
 }) => {
+  const { STATE_filtersOptions, STATE_setFiltersOptions } = useFilters();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const { STATE_setShowAnimation } = useFilters();
+  const { STATE_setShowAnimation, STATE_filtersOptionsHandler } = useFilters();
 
   useEffect(() => {
-    if (filtersOptions) {
-      setSelectedOptions(filtersOptions[propertyToSearch] ?? []);
+    if (STATE_filtersOptions) {
+      setSelectedOptions(STATE_filtersOptions[propertyToSearch] ?? []);
     } else {
       setSelectedOptions([]);
     }
-  }, [filtersOptions, propertyToSearch]);
+  }, [STATE_filtersOptions, propertyToSearch]);
 
   const options = extractPropertiesNames(itemsToFilter, propertyToSearch);
 
@@ -52,10 +47,10 @@ const Checkboxes: React.FC<CheckboxProps> = ({
                 checked,
                 selectedOptions,
                 setSelectedOptions,
-                filtersOptions,
-                setFiltersOptions,
                 propertyToSearch,
-                filtersHandler,
+                STATE_filtersOptions,
+                STATE_setFiltersOptions,
+                STATE_filtersOptionsHandler,
                 STATE_setShowAnimation
               )
             }
