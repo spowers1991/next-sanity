@@ -3,14 +3,14 @@
 import React, { useEffect } from "react";
 import FilteredListing from "./[FilteredListing]/FilteredListing";
 import Button from "../[Button]/Button";
-import { FilteredItem } from "@/lib/filters/types/FilteredItem";
-import { FilterConfigItem } from "@/lib/filters/types/FilterConfigItem";
+import { FilterItem } from "@/services/filters/types/FilterItem";
+import { FiltersConfig } from "@/lib/filters/types/FiltersConfig";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 import FiltersOptions from "./[FiltersOptions]/FiltersOptions";
 
 interface FilterProps {
-  itemsToFilter: FilteredItem[];
-  filtersToShow: FilterConfigItem[];
+  itemsToFilter: FilterItem[];
+  filtersToShow: FiltersConfig[];
 }
 
 const Filters: React.FC<FilterProps> = ({ itemsToFilter, filtersToShow }) => {

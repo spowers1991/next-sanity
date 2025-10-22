@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { FilterConfigItem } from "@/lib/filters/types/FilterConfigItem";
+import { FiltersConfig } from "@/lib/filters/types/FiltersConfig";
 import Checkboxes from "./[Checkboxes]/Checkboxes";
 // import TextSearch from "./[TextSearch]/TextSearch"; // Uncomment when ready
-import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import { FilterItem } from "@/services/filters/types/FilterItem";
 
 interface FiltersOptionsProps {
-  itemsToFilter: FilteredItem[];
-  filtersToShow: FilterConfigItem[]; // array of filters to render
+  itemsToFilter: FilterItem[];
+  filtersToShow: FiltersConfig[]; // array of filters to render
 }
 
 const FiltersOptions: React.FC<FiltersOptionsProps> = ({ itemsToFilter, filtersToShow }) => {

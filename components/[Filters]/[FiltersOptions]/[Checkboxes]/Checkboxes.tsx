@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FilteredItem } from "@/lib/filters/types/FilteredItem";
+import { FilterItem } from "@/services/filters/types/FilterItem";
 import { extractPropertiesNames } from "@/lib/filters/helpers/extractPropertiesNames";
 import { handleCheckboxChange } from "@/components/[Filters]/[FiltersOptions]/[Checkboxes]/actions/handleCheckboxChange";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 import Checkbox from "@/components/[Filters]/[FiltersOptions]/[Checkboxes]/[Checkbox]/Checkbox";
 
 interface CheckboxProps {
-  itemsToFilter: FilteredItem[];
+  itemsToFilter: FilterItem[];
   label: string;
   propertyToSearch: string;
 }
