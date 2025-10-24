@@ -1,19 +1,19 @@
 import Link from "next/link";
 
 interface GridItemProps {
-  title: string;
+  label: string;
   slug: string;
-  hrefPrefix?: string; // Optional prefix for href, e.g. "/movies"
-  className?: string;
 }
 
-export default function GridItem({ title, slug, hrefPrefix = "", className = "" }: GridItemProps) {
+export default function GridItem({ label, slug = "" }: GridItemProps) {
   return (
     <Link
-      href={`${hrefPrefix}/${slug}`}
-      className={`block rounded-lg border border-gray-700 p-4 hover:border-indigo-500 hover:shadow-lg transition ${className}`}
+      href={`${slug}`}
+      className={`relative block border-2 border-[#ddd] p-4 transition hover:border-[#fff] duration-300 ease-in`}
     >
-      <h2 className="text-lg font-semibold text-white">{title}</h2>
+      <h2 className="text-lg font-semibold text-[#ddd] hover:text-white">
+        {label}
+      </h2>
     </Link>
   );
 }

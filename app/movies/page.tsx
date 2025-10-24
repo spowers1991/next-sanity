@@ -11,7 +11,7 @@ export const metadata: Metadata = setMetadata({
 });
 
 export default async function MoviesArchivePage() {
-  // ✅ Fetch server-side for SEO + structured data
+
   const movies = await getMovies();
 
   return (
@@ -23,8 +23,7 @@ export default async function MoviesArchivePage() {
         )}
       />
 
-      {/* 👇 Hydrate Movies client component */}
-      <Movies initialMovies={movies} />
+      <Movies />
     </>
   );
 }
