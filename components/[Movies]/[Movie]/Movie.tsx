@@ -21,7 +21,7 @@ export default function Movie({ movie }: MovieProps) {
       <div className="w-2/4">
         <Filters
           itemsToFilter={movies}
-          filtersToShow={[
+          filtersOptions={[
             {
               type: "checkbox",
               label: "Cast Members",

@@ -8,9 +8,9 @@
  * @param setFilteredItems - Callback to set the filtered items
  */
 export function updateFilters<T extends object>(
-  itemsToFilter: T[],
+  itemsToFilter: unknown[],
   filters: Record<string, string | string[]>,
-  setFilteredItems: (items: T[]) => void
+  setFilteredItems: (items: unknown[]) => void
 ): void {
   /**
    * Recursively retrieves values from an object based on a dot-notation path.

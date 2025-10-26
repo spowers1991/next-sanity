@@ -2,18 +2,19 @@
 
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
-import { FiltersItem } from "@/services/filters/types/FiltersItem";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
 import { animateCard } from "./animations/animateCard";
 import { handleCardClick } from "./animations/handleCardClick";
 
 interface FiltersCardProps {
-  filteredItem: FiltersItem;
+  filteredItem: unknown;
   index?: number;
 }
 
 const FiltersCard: React.FC<FiltersCardProps> = ({ filteredItem, index = 0 }) => {
+
   const { STATE_setShowAnimation, STATE_showAnimation } = useFilters();
+  
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -26,8 +27,14 @@ const FiltersCard: React.FC<FiltersCardProps> = ({ filteredItem, index = 0 }) =>
     };
   }, [STATE_showAnimation, index]);
 
+  const item = filteredItem as {
+    _type: string;
+    slug: { current: string };
+    title: string;
+  };
+
   return (
-    <Link href={`/${filteredItem._type}s/${filteredItem.slug.current}`} className="block">
+    <Link href={`/${item._type}s/${item.slug.current}`} className="block">
       <div
         ref={cardRef}
         onClick={() => handleCardClick(STATE_setShowAnimation)}
@@ -35,7 +42,7 @@ const FiltersCard: React.FC<FiltersCardProps> = ({ filteredItem, index = 0 }) =>
       >
         <div className="m-auto">
           <div className="flex gap-3 items-top text-[#555] text-center text-xl font-bold">
-            {filteredItem.title}
+            {item.title}
           </div>
         </div>
       </div>

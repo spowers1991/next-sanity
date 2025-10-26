@@ -1,37 +1,32 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import FilteredListing from "./[FilteredListing]/FilteredListing";
 import Button from "../[Button]/Button";
-import { FiltersItem } from "@/services/filters/types/FiltersItem";
-import { FiltersConfig } from "@/lib/filters/types/FiltersConfig";
 import { useFilters } from "@/lib/filters/state/FiltersContext";
+import type { FiltersConfig } from "@/lib/filters/types/FiltersConfig";
 import FiltersOptions from "./[FiltersOptions]/FiltersOptions";
 
 interface FilterProps {
-  itemsToFilter: FiltersItem[];
-  filtersToShow: FiltersConfig[];
+  itemsToFilter: unknown[];
+  filtersOptions: FiltersConfig[];
 }
 
-const Filters: React.FC<FilterProps> = ({ itemsToFilter, filtersToShow }) => {
+const Filters: React.FC<FilterProps> = ({ itemsToFilter, filtersOptions }) => {
   const {
-    STATE_itemsToFilter,
-    STATE_filtersOptions,
-    STATE_filteredItems,
-    STATE_setItemsToFilter,
+    STATE_setupFilters,
+    STATE_filtersValues,
     STATE_setShowAnimation,
     STATE_clearFilters,
   } = useFilters();
 
-  useEffect(() => {
-    STATE_setItemsToFilter(itemsToFilter);
-  }, [itemsToFilter, STATE_setItemsToFilter]);
+  STATE_setupFilters(itemsToFilter, filtersOptions);
 
   return (
     <div className="container">
       <div className="grid grid-cols-2 gap-6 w-full">
         <div className="flex flex-col gap-6 bg-white p-6">
-          {Object.keys(STATE_filtersOptions).length > 0 && (
+          {Object.keys(STATE_filtersValues).length > 0 && (
             <Button
               label="Clear Filters"
               onClick={() => {
@@ -42,14 +37,11 @@ const Filters: React.FC<FilterProps> = ({ itemsToFilter, filtersToShow }) => {
             />
           )}
 
-          <FiltersOptions
-            itemsToFilter={STATE_itemsToFilter}
-            filtersToShow={filtersToShow}
-          />
+          <FiltersOptions />
         </div>
 
         <div className="w-full">
-          <FilteredListing filteredItems={STATE_filteredItems} />
+          <FilteredListing />
         </div>
       </div>
     </div>
